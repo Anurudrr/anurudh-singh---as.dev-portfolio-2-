@@ -45,7 +45,7 @@ export default function Home() {
           {featured.map((proj: any) => (
             <div
               key={proj.id}
-              className="border-[3px] border-black bg-white p-6 shadow-[6px_6px_0_#0d0d0d] hover:shadow-[4px_4px_0_#000] relative group flex flex-col justify-between transition-transform duration-200 ease-linear hover:-translate-y-1"
+              className="border-[6px] border-black bg-white p-8 shadow-[10px_10px_0_#0d0d0d] relative group flex flex-col justify-between transition-transform duration-200 ease-linear hover:-translate-y-2 hover:shadow-[6px_6px_0_#000]"
             >
               <div>
                 <div className="flex justify-between items-center mb-4 selection:bg-black">
@@ -62,7 +62,7 @@ export default function Home() {
                 </h3>
 
                 {proj.image && (
-                  <div className="w-full h-64 border-2 border-black mb-4 overflow-hidden bg-neutral-100">
+                  <div className="w-full h-96 border-2 border-black mb-4 overflow-hidden bg-neutral-100">
                     <img
                       src={proj.image}
                       alt={proj.title}
@@ -122,9 +122,9 @@ export default function Home() {
           {recentArt.map((art: any) => (
             <div
               key={art.id}
-              className="border-2 border-white bg-neutral-900 overflow-hidden shadow-[4px_4px_0_#FFE03A] group"
+              className="border-[4px] border-white bg-neutral-900 overflow-hidden shadow-[8px_8px_0_#FFE03A] group"
             >
-              <div className="h-44 border-b-2 border-white relative overflow-hidden bg-black">
+              <div className="h-80 border-b-2 border-white relative overflow-hidden bg-black">
                 <img
                   src={art.imageUrl}
                   alt={art.title}
