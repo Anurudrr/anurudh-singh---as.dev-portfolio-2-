@@ -161,261 +161,6 @@ export default function Hero() {
 
   return (
     <>
-      {/* ── CARTOON HOVER POPUP (outside section so overflow-hidden can't clip it) ── */}
-      <AnimatePresence>
-        {showCartoon && (
-          <motion.div
-            key="cartoon-popup"
-            initial={{ opacity: 0, scale: 0.82, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: 3 }}
-            exit={{ opacity: 0, scale: 0.82, rotate: -6 }}
-            transition={{ type: "spring", stiffness: 420, damping: 24 }}
-            style={{
-              position: "fixed",
-              top: mousePos.y - 20,
-              left: mousePos.x + 28,
-              zIndex: 99999,
-              pointerEvents: "none",
-              width: 200,
-              filter: "drop-shadow(8px 8px 0px #0d0d0d)",
-            }}
-          >
-            {/* Speech bubble tail pointing left */}
-            <div style={{
-              position: "absolute",
-              top: 44,
-              left: -16,
-              width: 0,
-              height: 0,
-              borderTop: "10px solid transparent",
-              borderBottom: "10px solid transparent",
-              borderRight: "16px solid #0d0d0d",
-              zIndex: 10,
-            }} />
-            <div style={{
-              position: "absolute",
-              top: 46,
-              left: -11,
-              width: 0,
-              height: 0,
-              borderTop: "8px solid transparent",
-              borderBottom: "8px solid transparent",
-              borderRight: "13px solid #FFE03A",
-              zIndex: 11,
-            }} />
-
-            {/* Main card */}
-            <div style={{
-              border: "4px solid #0d0d0d",
-              background: "#FFE03A",
-              boxShadow: "6px 6px 0 #0d0d0d",
-              overflow: "hidden",
-              position: "relative",
-            }}>
-              {/* Top header */}
-              <div style={{
-                background: "#0d0d0d",
-                color: "#FFE03A",
-                fontFamily: "monospace",
-                fontSize: 9,
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                padding: "5px 10px",
-                fontWeight: 900,
-                borderBottom: "3px solid #E8281A",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}>
-                <span style={{ color: "#E8281A", fontSize: 11 }}>◆</span>
-                ANURUDH · IRL
-              </div>
-
-              {/* Photo with comic overlays */}
-              <div style={{ position: "relative", overflow: "hidden", background: "#111" }}>
-                {/* Halftone dots */}
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundImage: "radial-gradient(#FFE03A 1px, transparent 1px)",
-                  backgroundSize: "6px 6px",
-                  opacity: 0.10,
-                  zIndex: 2,
-                  pointerEvents: "none",
-                }} />
-                {/* Vignette */}
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "radial-gradient(ellipse at center, transparent 50%, rgba(232,40,26,0.15) 100%)",
-                  zIndex: 3,
-                  pointerEvents: "none",
-                }} />
-                
-                <div style={{ display: "flex", justifyContent: "center", padding: 12 }}>
-                  <style>{`@keyframes cardReveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-
-                  {/* Outer square frame to match Dave's bold panel */}
-                  <div style={{
-                    display: 'inline-block',
-                    border: '6px solid #111',
-                    padding: 12,
-                    boxShadow: '8px 8px 0px #111',
-                    background: 'transparent',
-                    borderRadius: 0,
-                  }}>
-
-                    <div style={{
-                      width: 460,
-                      aspectRatio: "3 / 4",
-                      background: "#F5C800",
-                      border: "3px solid #111",
-                      borderRadius: 0,
-                      position: "relative",
-                      overflow: "hidden",
-                      boxShadow: "6px 6px 0px #111",
-                      animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both, floatCard 4s ease-in-out 1s infinite",
-                    }}>
-                    <style>{`@keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }`}</style>
-                    <img
-                      src={anurudhRealPhoto}
-                      alt="Anurudh Singh"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center top",
-                        display: "block",
-                      }}
-                    />
-                    {/* LEFT EYE */}
-                    <div
-                      ref={leftEyeRef}
-                      style={{
-                        position: 'absolute',
-                        width: 22,
-                        height: 22,
-                        borderRadius: '50%',
-                        background: 'white',
-                        border: '1.5px solid rgba(0,0,0,0.25)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
-                        top: '37%',
-                        left: '41%',
-                        zIndex: 10,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      <div
-                        className="pupil"
-                        style={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: '50%',
-                          background: '#1a1a1a',
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          transform: 'translate(-50%, -50%)',
-                          transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          pointerEvents: 'none',
-                        }}
-                      />
-                    </div>
-
-                    {/* RIGHT EYE */}
-                    <div
-                      ref={rightEyeRef}
-                      style={{
-                        position: 'absolute',
-                        width: 22,
-                        height: 22,
-                        borderRadius: '50%',
-                        background: 'white',
-                        border: '1.5px solid rgba(0,0,0,0.25)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
-                        top: '37%',
-                        left: '54%',
-                        zIndex: 10,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      <div
-                        className="pupil"
-                        style={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: '50%',
-                          background: '#1a1a1a',
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          transform: 'translate(-50%, -50%)',
-                          transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          pointerEvents: 'none',
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom bar */}
-              <div style={{
-                background: "#E8281A",
-                color: "#fff",
-                fontFamily: "monospace",
-                fontSize: 8,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                padding: "5px 10px",
-                fontWeight: 900,
-                borderTop: "3px solid #0d0d0d",
-                display: "flex",
-                justifyContent: "space-between",
-              }}>
-                <span>FULL STACK</span>
-                <span style={{ color: "#FFE03A" }}>✦</span>
-                <span>UI / UX</span>
-              </div>
-            </div>
-
-            {/* AS·DEV badge */}
-            <div style={{
-              position: "absolute",
-              bottom: -14,
-              right: -14,
-              width: 44,
-              height: 44,
-              background: "#E8281A",
-              border: "3px solid #0d0d0d",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "monospace",
-              fontSize: 7,
-              fontWeight: 900,
-              color: "#fff",
-              textTransform: "uppercase",
-              lineHeight: 1.1,
-              textAlign: "center",
-              zIndex: 20,
-            }}>
-              AS<br />DEV
-            </div>
-
-            {/* Corner rivets */}
-            <div style={{ position: "absolute", top: -5, left: -5, width: 10, height: 10, background: "#FFE03A", border: "3px solid #0d0d0d", borderRadius: "50%", zIndex: 15 }} />
-            <div style={{ position: "absolute", top: -5, right: -5, width: 10, height: 10, background: "#FFE03A", border: "3px solid #0d0d0d", borderRadius: "50%", zIndex: 15 }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <section id="hero" className="min-h-[500px] grid grid-cols-1 lg:grid-cols-2 border-b-[3px] border-[#0d0d0d] relative overflow-hidden bg-[#faf6ec]">
         {/* Decorative vertical CRT line effects */}
@@ -533,15 +278,114 @@ export default function Hero() {
               onMouseLeave={handleMouseLeaveAvatar}
               animate={{ y: [0, -6, 0] }}
               transition={{ y: { repeat: Infinity, duration: 4, ease: "easeInOut" } }}
-              className={`w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] border-[4px] border-black ${currentVibe.bg} shadow-[10px_10px_0_#0d0d0d] flex flex-col items-center justify-center font-bangers text-7xl sm:text-8xl select-none cursor-pointer transition-colors duration-300 relative z-10`}
+              className={`relative z-10`}
               style={{
                 transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
                 transformStyle: "preserve-3d"
               }}
             >
-              <span className={`${currentVibe.textCol} tracking-widest flex items-center justify-center pointer-events-none`} style={{ transform: "translateZ(30px)" }}>
-                {currentVibe.text}
-              </span>
+              <div style={{ display: 'inline-block', border: '8px solid #111', padding: 16, boxShadow: '10px 10px 0px #111', background: 'transparent', borderRadius: 0 }}>
+                <div style={{
+                  width: 520,
+                  aspectRatio: "3 / 4",
+                  background: "#F5C800",
+                  border: "3px solid #111",
+                  borderRadius: 0,
+                  position: "relative",
+                  overflow: "hidden",
+                  boxShadow: "6px 6px 0px #111",
+                  animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both, floatCard 4s ease-in-out 1s infinite",
+                }}>
+                  <style>{`@keyframes cardReveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+                  <style>{`@keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }`}</style>
+
+                  <img
+                    src={anurudhRealPhoto}
+                    alt="Anurudh Singh"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center top",
+                      display: "block",
+                    }}
+                  />
+
+                  {/* LEFT EYE */}
+                  <div
+                    ref={leftEyeRef}
+                    style={{
+                      position: 'absolute',
+                      width: 26,
+                      height: 26,
+                      borderRadius: '50%',
+                      background: 'white',
+                      border: '1.5px solid rgba(0,0,0,0.25)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      top: '37%',
+                      left: '40%',
+                      zIndex: 20,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <div
+                      className="pupil"
+                      style={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        background: '#1a1a1a',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  </div>
+
+                  {/* RIGHT EYE */}
+                  <div
+                    ref={rightEyeRef}
+                    style={{
+                      position: 'absolute',
+                      width: 26,
+                      height: 26,
+                      borderRadius: '50%',
+                      background: 'white',
+                      border: '1.5px solid rgba(0,0,0,0.25)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      top: '37%',
+                      left: '53%',
+                      zIndex: 20,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <div
+                      className="pupil"
+                      style={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        background: '#1a1a1a',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
 
