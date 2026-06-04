@@ -30,6 +30,8 @@ export default function Hero() {
   const [showCartoon, setShowCartoon] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const cartoonTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leftEyeRef = useRef<HTMLDivElement>(null);
+  const rightEyeRef = useRef<HTMLDivElement>(null);
 
   // Core counter values (triggered instantly)
   const yearsVal = useCountUp(3);
@@ -80,21 +82,34 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  // Cursor-tracking eyes over avatar (pupils move subtly towards cursor)
+  // (Removed old generic eye tracker) — new refined pupil tracking implemented below using refs
+  
   useEffect(() => {
-    const eyes = document.querySelectorAll('.eye-pupil');
-    const handleMouseMove = (e: MouseEvent) => {
-      eyes.forEach((pupil) => {
-        const eye = pupil.parentElement!;
-        const rect = eye.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
-        const dist = 4; // small organic radius
-        (pupil as HTMLElement).style.transform =
-          `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
-      });
+    const MAX_DIST = 5; // Dave-like very subtle travel
+
+    const movePupil = (eyeEl: HTMLDivElement, mouseX: number, mouseY: number) => {
+      const rect = eyeEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(mouseY - cy, mouseX - cx);
+      const dist = Math.min(
+        MAX_DIST,
+        Math.hypot(mouseX - cx, mouseY - cy) * 0.15
+      );
+      const pupil = eyeEl.querySelector('.pupil') as HTMLElement | null;
+      if (pupil) {
+        const offsetX = Math.cos(angle) * dist;
+        const offsetY = Math.sin(angle) * dist;
+        pupil.style.transform =
+          `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+      }
     };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (leftEyeRef.current) movePupil(leftEyeRef.current, e.clientX, e.clientY);
+      if (rightEyeRef.current) movePupil(rightEyeRef.current, e.clientX, e.clientY);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
@@ -213,89 +228,106 @@ export default function Hero() {
                   zIndex: 3,
                   pointerEvents: "none",
                 }} />
-                <div style={{ position: "relative", width: "100%" }}>
-                  <img
-                    src={anurudhRealPhoto}
-                    alt="Anurudh Singh"
-                    style={{
-                      width: "100%",
-                      display: "block",
-                      aspectRatio: "1 / 1",
-                      objectFit: "cover",
-                      objectPosition: "center top",
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                  />
 
-                  {/* Left eye */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: 14,
-                      height: 14,
-                      borderRadius: "50%",
-                      background: "#fff",
-                      border: "2px solid #000",
-                      top: "34%",
-                      left: "36%",
-                      transform: "translate(-50%, -50%)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 15,
-                      pointerEvents: "none",
-                    }}
-                  >
-                    <div
-                      className="eye-pupil"
+                <div style={{ display: "flex", justifyContent: "center", padding: 12 }}>
+                  <style>{`@keyframes cardReveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+
+                  <div style={{
+                    width: 340,
+                    aspectRatio: "3 / 4",
+                    background: "#F5C800",
+                    border: "3px solid #111",
+                    borderRadius: 0,
+                    position: "relative",
+                    overflow: "hidden",
+                    boxShadow: "6px 6px 0px #111",
+                    animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both",
+                  }}>
+                    <img
+                      src={anurudhRealPhoto}
+                      alt="Anurudh Singh"
                       style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: "50%",
-                        background: "#111",
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center top",
+                        display: "block",
                       }}
                     />
-                  </div>
 
-                  {/* Right eye */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: 14,
-                      height: 14,
-                      borderRadius: "50%",
-                      background: "#fff",
-                      border: "2px solid #000",
-                      top: "34%",
-                      left: "62%",
-                      transform: "translate(-50%, -50%)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 15,
-                      pointerEvents: "none",
-                    }}
-                  >
+                    {/* LEFT EYE */}
                     <div
-                      className="eye-pupil"
+                      ref={leftEyeRef}
                       style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: "50%",
-                        background: "#111",
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                        position: 'absolute',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: 'white',
+                        border: '1.5px solid rgba(0,0,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        top: '37%',
+                        left: '41%',
+                        zIndex: 10,
+                        pointerEvents: 'none',
                       }}
-                    />
+                    >
+                      <div
+                        className="pupil"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: '50%',
+                          background: '#1a1a1a',
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    </div>
+
+                    {/* RIGHT EYE */}
+                    <div
+                      ref={rightEyeRef}
+                      style={{
+                        position: 'absolute',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: 'white',
+                        border: '1.5px solid rgba(0,0,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        top: '37%',
+                        left: '54%',
+                        zIndex: 10,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      <div
+                        className="pupil"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: '50%',
+                          background: '#1a1a1a',
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          transition: 'transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
