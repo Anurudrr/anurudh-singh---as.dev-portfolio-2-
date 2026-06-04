@@ -284,9 +284,9 @@ export default function Hero() {
                 transformStyle: "preserve-3d"
               }}
             >
-              <div style={{ display: 'inline-block', border: '8px solid #111', padding: 16, boxShadow: '10px 10px 0px #111', background: 'transparent', borderRadius: 0 }}>
+              <div style={{ display: 'inline-block', border: '10px solid #111', padding: 24, boxShadow: '12px 12px 0px #111', background: 'transparent', borderRadius: 0 }}>
                 <div style={{
-                  width: 520,
+                  width: 640,
                   aspectRatio: "3 / 4",
                   background: "#F5C800",
                   border: "3px solid #111",
@@ -316,8 +316,8 @@ export default function Hero() {
                     ref={leftEyeRef}
                     style={{
                       position: 'absolute',
-                      width: 26,
-                      height: 26,
+                      width: 32,
+                      height: 32,
                       borderRadius: '50%',
                       background: 'white',
                       border: '1.5px solid rgba(0,0,0,0.25)',
@@ -325,8 +325,8 @@ export default function Hero() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       overflow: 'hidden',
-                      top: '37%',
-                      left: '40%',
+                      top: '36.5%',
+                      left: '39%',
                       zIndex: 20,
                       pointerEvents: 'none',
                     }}
@@ -334,8 +334,8 @@ export default function Hero() {
                     <div
                       className="pupil"
                       style={{
-                        width: 12,
-                        height: 12,
+                        width: 14,
+                        height: 14,
                         borderRadius: '50%',
                         background: '#1a1a1a',
                         position: 'absolute',
@@ -353,8 +353,8 @@ export default function Hero() {
                     ref={rightEyeRef}
                     style={{
                       position: 'absolute',
-                      width: 26,
-                      height: 26,
+                      width: 32,
+                      height: 32,
                       borderRadius: '50%',
                       background: 'white',
                       border: '1.5px solid rgba(0,0,0,0.25)',
@@ -362,8 +362,8 @@ export default function Hero() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       overflow: 'hidden',
-                      top: '37%',
-                      left: '53%',
+                      top: '36.5%',
+                      left: '52%',
                       zIndex: 20,
                       pointerEvents: 'none',
                     }}
@@ -371,8 +371,8 @@ export default function Hero() {
                     <div
                       className="pupil"
                       style={{
-                        width: 12,
-                        height: 12,
+                        width: 14,
+                        height: 14,
                         borderRadius: '50%',
                         background: '#1a1a1a',
                         position: 'absolute',
