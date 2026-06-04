@@ -80,6 +80,25 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  // Cursor-tracking eyes over avatar (pupils move subtly towards cursor)
+  useEffect(() => {
+    const eyes = document.querySelectorAll('.eye-pupil');
+    const handleMouseMove = (e: MouseEvent) => {
+      eyes.forEach((pupil) => {
+        const eye = pupil.parentElement!;
+        const rect = eye.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+        const dist = 4; // small organic radius
+        (pupil as HTMLElement).style.transform =
+          `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const cycleVibe = () => {
     const vibes: ("code" | "design" | "coffee" | "gaming")[] = ["code", "design", "coffee", "gaming"];
     const nextIdx = (vibes.indexOf(vibeState) + 1) % vibes.length;
@@ -194,19 +213,91 @@ export default function Hero() {
                   zIndex: 3,
                   pointerEvents: "none",
                 }} />
-                <img
-                  src={anurudhRealPhoto}
-                  alt="Anurudh Singh"
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    aspectRatio: "1 / 1",
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    position: "relative",
-                    zIndex: 1,
-                  }}
-                />
+                <div style={{ position: "relative", width: "100%" }}>
+                  <img
+                    src={anurudhRealPhoto}
+                    alt="Anurudh Singh"
+                    style={{
+                      width: "100%",
+                      display: "block",
+                      aspectRatio: "1 / 1",
+                      objectFit: "cover",
+                      objectPosition: "center top",
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Left eye */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: 14,
+                      height: 14,
+                      borderRadius: "50%",
+                      background: "#fff",
+                      border: "2px solid #000",
+                      top: "34%",
+                      left: "36%",
+                      transform: "translate(-50%, -50%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 15,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div
+                      className="eye-pupil"
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        background: "#111",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                      }}
+                    />
+                  </div>
+
+                  {/* Right eye */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: 14,
+                      height: 14,
+                      borderRadius: "50%",
+                      background: "#fff",
+                      border: "2px solid #000",
+                      top: "34%",
+                      left: "62%",
+                      transform: "translate(-50%, -50%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 15,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div
+                      className="eye-pupil"
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        background: "#111",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Bottom bar */}

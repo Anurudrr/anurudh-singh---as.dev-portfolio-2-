@@ -1,5 +1,6 @@
 import React from "react";
 import Hero from "../components/Hero";
+import Marquee from "../components/Marquee";
 import About from "../components/About";
 import { useDB } from "../useDB";
 import { motion } from "motion/react";
@@ -16,6 +17,7 @@ export default function Home() {
     <div className="space-y-0">
       {/* Dynamic Hero Station */}
       <Hero />
+      <Marquee />
 
       {/* QUICK INTRO ABOUT */}
       <About />
@@ -43,7 +45,7 @@ export default function Home() {
           {featured.map((proj: any) => (
             <div
               key={proj.id}
-              className="border-[3px] border-black bg-white p-6 shadow-[6px_6px_0_#0d0d0d] relative group flex flex-col justify-between"
+              className="border-[3px] border-black bg-white p-6 shadow-[6px_6px_0_#0d0d0d] hover:shadow-[4px_4px_0_#000] relative group flex flex-col justify-between transition-transform duration-200 ease-linear hover:-translate-y-1"
             >
               <div>
                 <div className="flex justify-between items-center mb-4 selection:bg-black">
