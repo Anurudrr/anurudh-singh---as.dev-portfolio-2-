@@ -41,7 +41,7 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featured.map((proj: any) => (
             <div
               key={proj.id}
@@ -62,7 +62,7 @@ export default function Home() {
                 </h3>
 
                 {proj.image && (
-                  <div className="w-full border-2 border-black mb-4 overflow-hidden bg-neutral-100" style={{height:520}}>
+                  <div className="w-full h-96 border-2 border-black mb-4 overflow-hidden bg-neutral-100">
                     <img
                       src={proj.image}
                       alt={proj.title}
@@ -124,7 +124,7 @@ export default function Home() {
               key={art.id}
               className="border-[4px] border-white bg-neutral-900 overflow-hidden shadow-[8px_8px_0_#FFE03A] group"
             >
-              <div className="border-b-2 border-white relative overflow-hidden bg-black" style={{height:520}}>
+              <div className="h-80 border-b-2 border-white relative overflow-hidden bg-black">
                 <img
                   src={art.imageUrl}
                   alt={art.title}
