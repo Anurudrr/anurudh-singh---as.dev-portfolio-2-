@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-bangers: "Bangers", cursive;
+  --font-mono: "Space Mono", monospace;
+  --font-elite: "Special Elite", cursive;
+  --font-bebas: "Bebas Neue", cursive;
+}
+
+/* Custom Base Brutalist Styles */
+:root {
+  --ink: #0d0d0d;
+  --white: #f5f0e8;
+  --yellow: #FFE03A;
+  --red: #E8281A;
+  --blue: #1A5CE8;
+  --cream: #faf6ec;
+  --green: #2ECC71;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  cursor: none; /* Hide default cursor to render custom cursor */
+}
+
+/* Hide scrollbar for custom elegant feel, but allow scrolling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+  border-left: 2px solid var(--ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border: 1px solid var(--yellow);
+}
+
+/* Custom animations and utility effects */
+@keyframes pulseFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.nav-pulse-dot {
+  animation: pulseFast 1.5s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.avatar-ring-spin {
+  animation: spinSlow 20s linear infinite;
+}
+
+@keyframes avatarBlink {
+  0%, 88%, 94%, 100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  90%, 92% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.avatar-blink-lid {
+  animation: avatarBlink 5.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes targetPulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+}
+
+/* Support for custom reveal transitions */
+.reveal-transition {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
