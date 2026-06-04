@@ -23,7 +23,7 @@ export default function Home() {
       <About />
 
       {/* FEATURED PROJECTS SUB SECTION */}
-      <section className="bg-[#faf6ec] border-b-[3px] border-[#0d0d0d] py-16 px-6 sm:px-12 lg:px-16">
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="bg-[#faf6ec] border-b-[3px] border-[#0d0d0d] py-16 px-6 sm:px-12 lg:px-16">
         <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-12 gap-4">
           <div>
             <div className="font-mono text-xs text-[#E8281A] tracking-[0.3em] uppercase font-bold">
@@ -62,7 +62,7 @@ export default function Home() {
                 </h3>
 
                 {proj.image && (
-                  <div className="w-full h-44 border-2 border-black mb-4 overflow-hidden bg-neutral-100">
+                  <div className="w-full h-64 border-2 border-black mb-4 overflow-hidden bg-neutral-100">
                     <img
                       src={proj.image}
                       alt={proj.title}
@@ -98,7 +98,7 @@ export default function Home() {
       </section>
 
       {/* RECENT ARTWORK SHOWCASE */}
-      <section className="bg-black text-white border-b-[3px] border-[#0d0d0d] py-16 px-6 sm:px-12 lg:px-16 relative">
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.08 }} className="bg-black text-white border-b-[3px] border-[#0d0d0d] py-16 px-6 sm:px-12 lg:px-16 relative">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
         
         <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-12 gap-4 relative z-10">
@@ -146,7 +146,7 @@ export default function Home() {
       </section>
 
       {/* QUICK SYSTEM DECISION CTA */}
-      <section className="bg-[#FFE03A] text-black border-b-[3px] border-[#0d0d0d] py-12 px-6 sm:px-12 lg:px-16 text-center">
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.16 }} className="bg-[#FFE03A] text-black border-b-[3px] border-[#0d0d0d] py-12 px-6 sm:px-12 lg:px-16 text-center">
         <h2 className="font-bangers text-4xl sm:text-5xl lg:text-6xl text-black tracking-widest leading-none mb-4">
           LOOKING FOR AN INTERN OR PRO ENGINEER?
         </h2>
