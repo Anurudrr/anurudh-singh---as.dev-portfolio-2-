@@ -86,8 +86,10 @@ export default function Hero() {
   
   useEffect(() => {
     const MAX_DIST = 5; // Dave-like very subtle travel
+    const lastMouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let rafId: number | null = null;
 
-    const movePupil = (eyeEl: HTMLDivElement, mouseX: number, mouseY: number) => {
+    const movePupil = (eyeEl: HTMLDivElement, mouseX: number, mouseY: number, idleOffsetX = 0, idleOffsetY = 0) => {
       const rect = eyeEl.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
@@ -98,20 +100,41 @@ export default function Hero() {
       );
       const pupil = eyeEl.querySelector('.pupil') as HTMLElement | null;
       if (pupil) {
-        const offsetX = Math.cos(angle) * dist;
-        const offsetY = Math.sin(angle) * dist;
+        const offsetX = Math.cos(angle) * dist + idleOffsetX;
+        const offsetY = Math.sin(angle) * dist + idleOffsetY;
         pupil.style.transform =
           `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
       }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      lastMouse.x = e.clientX;
+      lastMouse.y = e.clientY;
       if (leftEyeRef.current) movePupil(leftEyeRef.current, e.clientX, e.clientY);
       if (rightEyeRef.current) movePupil(rightEyeRef.current, e.clientX, e.clientY);
     };
 
+    const loop = (t: number) => {
+      // idle subtle organic motion using sine waves
+      const idleAmp = 1.5; // very small
+      const lx = Math.sin(t * 0.0012) * idleAmp; // slow phase
+      const ly = Math.cos(t * 0.0017) * idleAmp;
+      const rx = Math.sin(t * 0.0015 + 1.3) * idleAmp;
+      const ry = Math.cos(t * 0.0011 + 2.1) * idleAmp;
+
+      if (leftEyeRef.current) movePupil(leftEyeRef.current, lastMouse.x, lastMouse.y, lx, ly);
+      if (rightEyeRef.current) movePupil(rightEyeRef.current, lastMouse.x, lastMouse.y, rx, ry);
+
+      rafId = requestAnimationFrame(loop);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const cycleVibe = () => {
@@ -241,8 +264,9 @@ export default function Hero() {
                     position: "relative",
                     overflow: "hidden",
                     boxShadow: "6px 6px 0px #111",
-                    animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both",
+                    animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both, floatCard 4s ease-in-out 1s infinite",
                   }}>
+                    <style>{`@keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }`}</style>
                     <img
                       src={anurudhRealPhoto}
                       alt="Anurudh Singh"
@@ -254,7 +278,6 @@ export default function Hero() {
                         display: "block",
                       }}
                     />
-
                     {/* LEFT EYE */}
                     <div
                       ref={leftEyeRef}
