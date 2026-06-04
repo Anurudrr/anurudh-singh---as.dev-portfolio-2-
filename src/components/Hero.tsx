@@ -251,21 +251,31 @@ export default function Hero() {
                   zIndex: 3,
                   pointerEvents: "none",
                 }} />
-
+                
                 <div style={{ display: "flex", justifyContent: "center", padding: 12 }}>
                   <style>{`@keyframes cardReveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 
+                  {/* Outer square frame to match Dave's bold panel */}
                   <div style={{
-                    width: 340,
-                    aspectRatio: "3 / 4",
-                    background: "#F5C800",
-                    border: "3px solid #111",
+                    display: 'inline-block',
+                    border: '6px solid #111',
+                    padding: 12,
+                    boxShadow: '8px 8px 0px #111',
+                    background: 'transparent',
                     borderRadius: 0,
-                    position: "relative",
-                    overflow: "hidden",
-                    boxShadow: "6px 6px 0px #111",
-                    animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both, floatCard 4s ease-in-out 1s infinite",
                   }}>
+
+                    <div style={{
+                      width: 460,
+                      aspectRatio: "3 / 4",
+                      background: "#F5C800",
+                      border: "3px solid #111",
+                      borderRadius: 0,
+                      position: "relative",
+                      overflow: "hidden",
+                      boxShadow: "6px 6px 0px #111",
+                      animation: "cardReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both, floatCard 4s ease-in-out 1s infinite",
+                    }}>
                     <style>{`@keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }`}</style>
                     <img
                       src={anurudhRealPhoto}
