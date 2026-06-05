@@ -195,7 +195,7 @@ export default function App() {
 
   const pointerPos = useRef({ x: -100, y: -100 });
   const trailTargetPos = useRef({ x: -100, y: -100 });
-  const dotPositions = useRef(new Array(6).fill({ x: -100, y: -100 }));
+  const dotPositions = useRef(new Array(3).fill({ x: -100, y: -100 }));
   const hoverState = useRef(false);
 
   // Scramble text state for ANURUDH and SINGH
@@ -328,6 +328,7 @@ export default function App() {
 
       if (cursorDotRef.current) {
         cursorDotRef.current.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`;
+        cursorDotRef.current.style.willChange = "transform";
         cursorDotRef.current.style.width = hoverState.current ? "14px" : "10px";
         cursorDotRef.current.style.height = hoverState.current ? "14px" : "10px";
         cursorDotRef.current.style.backgroundColor = hoverState.current ? "#0d0d0d" : "#FFE03A";
@@ -340,6 +341,7 @@ export default function App() {
 
       if (cursorRingRef.current) {
         cursorRingRef.current.style.transform = `translate3d(calc(${tx}px - 50%), calc(${ty}px - 50%), 0)`;
+        cursorRingRef.current.style.willChange = "transform";
         cursorRingRef.current.style.width = hoverState.current ? "52px" : "34px";
         cursorRingRef.current.style.height = hoverState.current ? "52px" : "34px";
         cursorRingRef.current.style.backgroundColor = hoverState.current ? "rgba(255,224,58,0.15)" : "transparent";
@@ -363,24 +365,26 @@ export default function App() {
         }
       });
 
-      // Update Avatar Eyes
-      [leftPupilRef, rightPupilRef].forEach((ref) => {
-        if (ref.current) {
-          const eyeEl = ref.current.parentElement || ref.current;
-          const rect = eyeEl.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dx = mouseX - cx;
-          const dy = mouseY - cy;
-          const angle = Math.atan2(dy, dx);
-          const dist = Math.min(1, Math.sqrt(dx * dx + dy * dy) / 300); 
-          const maxDist = 2.4;
-          
-          const px = Math.cos(angle) * maxDist * dist;
-          const py = Math.sin(angle) * maxDist * dist;
-          ref.current.style.transform = `translate3d(${px}px, ${py}px, 0)`;
-        }
-      });
+      // Skip eye update every 2 frames to reduce layout thrashing
+      if (Math.random() > 0.5) {
+        [leftPupilRef, rightPupilRef].forEach((ref) => {
+          if (ref.current) {
+            const eyeEl = ref.current.parentElement || ref.current;
+            const rect = eyeEl.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = mouseX - cx;
+            const dy = mouseY - cy;
+            const angle = Math.atan2(dy, dx);
+            const dist = Math.min(1, Math.sqrt(dx * dx + dy * dy) / 300); 
+            const maxDist = 2.4;
+            
+            const px = Math.cos(angle) * maxDist * dist;
+            const py = Math.sin(angle) * maxDist * dist;
+            ref.current.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+          }
+        });
+      }
 
       animFrameId = requestAnimationFrame(tick);
     };
@@ -472,13 +476,13 @@ export default function App() {
     const rotX = -(y / (rect.height / 2)) * 10;
     const rotY = (x / (rect.width / 2)) * 10;
     el.style.transition = "none";
-    el.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    el.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.75)`;
   };
 
   const handleMouseLeaveAvatar = () => {
     if (!avatarCardRef.current) return;
     avatarCardRef.current.style.transition = "transform 180ms ease-out";
-    avatarCardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+    avatarCardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1.75)";
   };
 
   // Text scramble implementation
@@ -859,43 +863,32 @@ export default function App() {
                   transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
                   className="relative"
                 >
-                  <div className="mb-5 border-[3px] border-[#0d0d0d] bg-white p-4 shadow-[6px_6px_0_#0d0d0d]">
-                    <div className="mb-3 flex items-center justify-between gap-3 border-b-2 border-[#0d0d0d]/10 pb-3">
-                      <span className="font-mono text-[9px] font-black uppercase tracking-[0.24em] text-[#0d0d0d]/45">
-                        Current Status
-                      </span>
-                      <span className="inline-flex items-center gap-2 border-2 border-[#0d0d0d] bg-[#FFE03A] px-2 py-1 font-mono text-[8px] font-black uppercase tracking-widest text-[#0d0d0d]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#2ECC71] nav-pulse-dot" />
-                        IST Live
-                      </span>
-                    </div>
-                    <p className="font-bebas text-xl font-bold uppercase leading-none tracking-wider text-[#E8281A] sm:text-2xl">
-                      {statusMessage}
-                    </p>
-                  </div>
-
-                  <div className="relative">
-                  <div className="absolute -top-7 -right-5 hidden sm:flex h-16 w-16 rotate-6 items-center justify-center border-[3px] border-[#0d0d0d] bg-[#1A5CE8] font-bangers text-3xl tracking-widest text-white shadow-[4px_4px_0_#0d0d0d] z-30">
-                    AS
-                  </div>
-
+                  <div className="relative bg-transparent">
                   <div
                     ref={avatarCardRef}
-                    className="relative aspect-square overflow-hidden border-[4px] border-[#0d0d0d] bg-[#FFE03A] shadow-[12px_12px_0_#0d0d0d] will-change-transform interactive-hover"
+                    className="relative aspect-square overflow-hidden drop-shadow-[0px_5px_0px_#0d0d0d] will-change-transform interactive-hover"
                     style={{
-                      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg)",
+                      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1.75)",
                       transformStyle: "preserve-3d"
                     }}
                     onMouseMove={handleMouseMoveAvatar}
                     onMouseLeave={handleMouseLeaveAvatar}
                   >
-                    <div className="absolute inset-0 z-10 pointer-events-none opacity-[0.14] [background-image:radial-gradient(#0d0d0d_1.4px,transparent_1.4px)] [background-size:12px_12px]" />
                     <img
                       src={anurudhAnimatedAvatar}
                       alt="Animated portrait of Anurudh Singh"
                       draggable={false}
                       className="absolute inset-0 h-full w-full object-cover select-none"
                       style={{ transform: "translateZ(26px)" }}
+                    />
+                    
+                    {/* Hair flow animation overlay */}
+                    <div
+                      className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[45%] pointer-events-none avatar-hair-flow"
+                      style={{
+                        background: "radial-gradient(ellipse at center 30%, rgba(0,0,0,0.08) 0%, transparent 70%)",
+                        transform: "translateZ(27px)"
+                      }}
                     />
 
                     <span
@@ -905,7 +898,7 @@ export default function App() {
                       <span ref={leftPupilRef} className="relative block h-[6.5px] w-[6.5px] rounded-full bg-[#0d0d0d] sm:h-[8.5px] sm:w-[8.5px]">
                         <span className="absolute left-[1px] top-[1px] h-[1.5px] w-[1.5px] rounded-full bg-white" />
                       </span>
-                      <span className="avatar-blink-lid absolute inset-0 z-10 block bg-[#d47b3d]" />
+                      <span className="avatar-blink-lid absolute inset-0 z-10 block bg-[#d47b3d]" style={{ animation: "avatarBlink 5.8s ease-in-out 0s infinite" }} />
                     </span>
 
                     <span
@@ -915,46 +908,16 @@ export default function App() {
                       <span ref={rightPupilRef} className="relative block h-[6.5px] w-[6.5px] rounded-full bg-[#0d0d0d] sm:h-[8.5px] sm:w-[8.5px]">
                         <span className="absolute left-[1px] top-[1px] h-[1.5px] w-[1.5px] rounded-full bg-white" />
                       </span>
-                      <span className="avatar-blink-lid absolute inset-0 z-10 block bg-[#d47b3d]" />
+                      <span className="avatar-blink-lid absolute inset-0 z-10 block bg-[#d47b3d]" style={{ animation: "avatarBlink 5.8s ease-in-out 0s infinite" }} />
                     </span>
 
                   </div>
                   </div>
-
-                  <a
-                    href="#projects"
-                    className="mt-4 flex items-center justify-center gap-2 border-[3px] border-[#0d0d0d] bg-[#0d0d0d] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-widest text-[#FFE03A] shadow-[5px_5px_0_#faf6ec] transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0_#faf6ec] interactive-hover"
-                  >
-                    Explore Projects <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
                 </motion.div>
               </motion.div>
 
               </div>
-
-            {/* Stats section */}
-            <div className="mt-10 grid grid-cols-2 border-[3px] border-[#0d0d0d] bg-[#faf6ec] shadow-[6px_6px_0_#0d0d0d] sm:grid-cols-4">
-              {[
-                { label: "Year of Study", val: `${stats.year}rd` },
-                { label: "Projects Built", val: `${stats.projects}+` },
-                { label: "Technologies", val: `${stats.tech}+` },
-                { label: "DSA Problems", val: "∞" },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="relative overflow-hidden border-b-[3px] border-r-[3px] border-[#0d0d0d] p-5 text-center last:border-r-0 group select-none sm:border-b-0"
-                >
-                  <div className="absolute inset-0 bg-[#FFE03A] scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-200 z-0" />
-                  <span className="font-bangers text-4xl text-[#0d0d0d] block relative z-10 transition-transform group-hover:scale-105">
-                    {item.val}
-                  </span>
-                  <span className="font-mono text-[9px] tracking-widest uppercase text-[#0d0d0d]/45 block mt-2 relative z-10 font-bold">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
             </div>
-          </div>
         </section>
 
         {/* SECTION 2: ABOUT */}

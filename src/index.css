@@ -14,7 +14,7 @@
   --yellow: #FFE03A;
   --red: #E8281A;
   --blue: #1A5CE8;
-  --cream: #faf6ec;
+  --cream: #F5C800;
   --green: #2ECC71;
 }
 
@@ -76,6 +76,25 @@ body {
   0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
   50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
   100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+}
+
+@keyframes hairFlow {
+  0%, 100% {
+    transform: translateX(0px) scaleX(1);
+  }
+  25% {
+    transform: translateX(2px) scaleX(1.01);
+  }
+  50% {
+    transform: translateX(0px) scaleX(1);
+  }
+  75% {
+    transform: translateX(-2px) scaleX(0.99);
+  }
+}
+
+.avatar-hair-flow {
+  animation: hairFlow 4s ease-in-out infinite;
 }
 
 /* Support for custom reveal transitions */

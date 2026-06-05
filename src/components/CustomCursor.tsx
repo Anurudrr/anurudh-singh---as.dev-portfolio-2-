@@ -41,8 +41,13 @@ export default function CustomCursor() {
 
     // Re-attach triggers because React pages re-render components inside state
     const mutationObserver = new MutationObserver(() => {
-      attachListeners();
+      // Debounce the re-attachment to avoid excessive DOM scanning
+      clearTimeout(mutationTimeout);
+      mutationTimeout = setTimeout(() => {
+        attachListeners();
+      }, 500);
     });
+    let mutationTimeout: NodeJS.Timeout;
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     // Custom tick animation loop for smooth ring lag physics
